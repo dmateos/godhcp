@@ -35,12 +35,12 @@ func NewUDPListener() UDPListener {
 	return listener
 }
 
-func (listener UDPListener) GetPacket() DHCPPacket {
+func (listener UDPListener) GetPacket() []byte {
 	buffer := make([]byte, 1024)
 	listener.connection.ReadFromUDP(buffer[:])
-	return NewDHCPPacket(buffer)
+	return buffer
 }
 
-func (listener UDPListener) SendPacket() bool {
-	return false
+func (listener UDPListener) SendPacket(p Packet) {
+	listener.connection.Write(p.ToBinary())
 }

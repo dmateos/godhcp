@@ -18,7 +18,8 @@ func main() {
 	dhcpListener := NewUDPListener()
 
 	for {
-		packet := dhcpListener.GetPacket()
+		data := dhcpListener.GetPacket()
+		packet := NewDHCPPacket(data)
 		go handle_packet(packet)
 	}
 }

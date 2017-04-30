@@ -45,3 +45,7 @@ func (packet DHCPPacket) IsValid() bool {
 	}
 	return false
 }
+
+func (packet DHCPPacket) ToBinary() []byte {
+	return make([]byte, 12)
+}
