@@ -45,7 +45,3 @@ func (packet DHCPPacket) IsValid() bool {
 	}
 	return false
 }
-
-func (packet DHCPPacket) SendReply() bool {
-	return true
-}
