@@ -11,6 +11,11 @@ type UDPListener struct {
 	isConnected bool
 }
 
+type UDPPacket struct {
+	data    []byte
+	address *net.UDPAddr
+}
+
 func NewUDPListener() UDPListener {
 	listener := UDPListener{}
 	listener.isConnected = false
@@ -35,12 +40,21 @@ func NewUDPListener() UDPListener {
 	return listener
 }
 
-func (listener UDPListener) GetPacket() []byte {
+func (listener UDPListener) GetPacket() ([]byte, *net.UDPAddr) {
 	buffer := make([]byte, 1024)
-	listener.connection.ReadFromUDP(buffer[:])
-	return buffer
+	n, addr, err := listener.connection.ReadFromUDP(buffer[:])
+
+	if n > 1 {
+
+	}
+
+	if err != nil {
+
+	}
+
+	return buffer, addr
 }
 
-func (listener UDPListener) SendPacket(p Packet) {
-	listener.connection.Write(p.ToBinary())
+func (listener UDPListener) SendPacket(p Packet, addr *net.UDPAddr) {
+	listener.connection.WriteToUDP(p.ToBinary(), addr)
 }

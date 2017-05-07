@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func handle_packet(packet DHCPPacket) {
+func handle_packet(packet *DHCPPacket) {
 	packet.Print()
 
 	if packet.IsValid() {
@@ -18,8 +18,8 @@ func main() {
 	dhcpListener := NewUDPListener()
 
 	for {
-		data := dhcpListener.GetPacket()
+		data, _ := dhcpListener.GetPacket()
 		packet := NewDHCPPacket(data)
-		go handle_packet(packet)
+		go handle_packet(&packet)
 	}
 }
