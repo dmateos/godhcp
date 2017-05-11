@@ -41,7 +41,7 @@ func NewUDPListener() UDPListener {
 }
 
 func (listener UDPListener) GetPacket() ([]byte, *net.UDPAddr) {
-	buffer := make([]byte, 1024)
+	buffer := make([]byte, 2046)
 	n, addr, err := listener.connection.ReadFromUDP(buffer[:])
 
 	if n > 1 {

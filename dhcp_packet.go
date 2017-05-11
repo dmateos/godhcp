@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"log"
 	"net"
 )
 
@@ -15,16 +16,7 @@ type DHCPPacket struct {
 	Chaddr                         [16]uint8
 	Sname                          [64]uint8
 	File                           [128]uint8
-	Options                        DHCPOption
-}
-
-type DHCPOption struct {
-	MagicCookie [4]uint8
-	MessageType [3]uint8
-	LeaseTime   [6]uint8
-	SubnetMask  [6]uint8
-	ServerId    [6]uint8
-	End         uint8
+	Magic                          [4]uint8
 }
 
 const (
@@ -33,19 +25,21 @@ const (
 )
 
 const (
-	DHCP_DISCOVER = 1
-	DHCP_OFFER    = 2
-	DHCP_REQUEST  = 3
-	DHCP_DECLINE  = 4
-	DHCP_ACK      = 5
-	DHCP_NAK      = 6
-	DHCP_RELEASE  = 7
-	DHCP_INFORM   = 8
+	DHCP_PACKET_END = 240
 )
 
 func NewDHCPPacket(data []byte) DHCPPacket {
 	packet := DHCPPacket{}
-	binary.Read(bytes.NewBuffer(data), binary.BigEndian, &packet)
+	err := binary.Read(bytes.NewBuffer(data[:DHCP_PACKET_END]), binary.BigEndian, &packet)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(data) <= 240 {
+		return packet
+	}
+
 	return packet
 }
 
@@ -65,15 +59,13 @@ func (packet DHCPPacket) Print() {
 	fmt.Println("DHCP data:")
 	fmt.Println(str)
 	fmt.Println(ipStr)
-	fmt.Println("DHCP options:")
-
 }
 
 func (packet DHCPPacket) IsValid() bool {
-	if packet.Options.MagicCookie[0] == 99 &&
-		packet.Options.MagicCookie[1] == 130 &&
-		packet.Options.MagicCookie[2] == 83 &&
-		packet.Options.MagicCookie[3] == 99 {
+	if packet.Magic[0] == 99 &&
+		packet.Magic[1] == 130 &&
+		packet.Magic[2] == 83 &&
+		packet.Magic[3] == 99 {
 		return true
 	}
 	return false
