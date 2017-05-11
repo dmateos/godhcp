@@ -25,6 +25,17 @@ const (
 )
 
 const (
+	DHCP_DISCOVER = 1
+	DHCP_OFFER    = 2
+	DHCP_REQUEST  = 3
+	DHCP_DECLINE  = 4
+	DHCP_ACK      = 5
+	DHCP_NAK      = 6
+	DHCP_RELEASE  = 7
+	DHCP_INFORM   = 8
+)
+
+const (
 	DHCP_PACKET_END = 240
 )
 
@@ -45,18 +56,17 @@ func NewDHCPPacket(data []byte) DHCPPacket {
 
 func (packet DHCPPacket) Print() {
 	str := fmt.Sprintf(
-		"op: %d\nhtype:%d\nhlen:%d\nhops:%d\nxid:%d\nsecs:%d\nflags:%d",
+		"op: %d, htype:%d, hlen:%d, hops:%d, xid:%d, secs:%d, flags:%d",
 		packet.Op, packet.Htype, packet.Hlen, packet.Hops,
 		packet.Xid, packet.Secs, packet.Flags,
 	)
 
 	ipStr := fmt.Sprintf(
-		"C: %s\nY: %s\nS: %s\nG: %s\n",
+		"C: %s, Y: %s, S: %s, G: %s",
 		packet.Int2Ip(packet.Ciaddr), packet.Int2Ip(packet.Yiaddr),
 		packet.Int2Ip(packet.Siaddr), packet.Int2Ip(packet.Giaddr),
 	)
 
-	fmt.Println("DHCP data:")
 	fmt.Println(str)
 	fmt.Println(ipStr)
 }

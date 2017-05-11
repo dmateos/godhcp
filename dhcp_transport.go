@@ -41,18 +41,19 @@ func NewUDPListener() UDPListener {
 }
 
 func (listener UDPListener) GetPacket() ([]byte, *net.UDPAddr) {
-	buffer := make([]byte, 2046)
+	buffer := make([]byte, 2048)
 	n, addr, err := listener.connection.ReadFromUDP(buffer[:])
 
-	if n > 1 {
-
-	}
-
 	if err != nil {
-
+		log.Fatal(err)
 	}
 
-	return buffer, addr
+	//So we get the correct sized buffer
+	//Unless this can be done better?
+	new_buffer := make([]byte, n)
+	copy(new_buffer, buffer)
+
+	return new_buffer, addr
 }
 
 func (listener UDPListener) SendPacket(p Packet, addr *net.UDPAddr) {

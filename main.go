@@ -4,16 +4,19 @@ import (
 	"fmt"
 )
 
-func handle_packet(packet *DHCPPacket, data []uint8) {
+func handle_packet(data []uint8) {
+	packet := NewDHCPPacket(data)
+
 	if !packet.IsValid() {
 		fmt.Println("false")
 		return
 	}
 
-	packet.Print()
 	optionParser := DHCPOptionParser{}
-	option := optionParser.ParseOptions(data, DHCP_PACKET_END)
-	fmt.Println(option)
+	options := optionParser.Parse(data, DHCP_PACKET_END)
+
+	packet.Print()
+	optionParser.Print(options)
 }
 
 func main() {
@@ -21,7 +24,6 @@ func main() {
 
 	for {
 		data, _ := dhcpListener.GetPacket()
-		packet := NewDHCPPacket(data)
-		go handle_packet(&packet, data)
+		go handle_packet(data)
 	}
 }
