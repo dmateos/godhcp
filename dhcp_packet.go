@@ -39,19 +39,15 @@ const (
 	DHCP_PACKET_END = 240
 )
 
-func NewDHCPPacket(data []byte) DHCPPacket {
+func NewDHCPPacket(data []byte) (DHCPPacket, error) {
 	packet := DHCPPacket{}
 	err := binary.Read(bytes.NewBuffer(data[:DHCP_PACKET_END]), binary.BigEndian, &packet)
 
 	if err != nil {
-		log.Fatal(err)
+		return packet, err
 	}
 
-	if len(data) <= 240 {
-		return packet
-	}
-
-	return packet
+	return packet, nil
 }
 
 func (packet DHCPPacket) Print() {
