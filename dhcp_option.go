@@ -26,37 +26,44 @@ const (
 	DHCP_INFORM   = 8
 )
 
-func (parser DHCPOptionParser) ParseOptions(data []byte, offset uint8) *DHCPOption {
+func (parser DHCPOptionParser) ParseOptions(data []byte, offset uint8) []DHCPOption {
+	var optionArray []DHCPOption
 
-	for offset <= uint8(len(data)) {
+	for offset+2 < uint8(len(data)) {
 		var option, length uint8
+
+		//Option/message type is first byte (first at 240 of DHCP message proper)
+		err := binary.Read(bytes.NewBuffer(data[offset:offset+1]), binary.BigEndian, &option)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//Length of the message data is second byte
+		err = binary.Read(bytes.NewBuffer(data[offset+1:offset+2]), binary.BigEndian, &length)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//Read data
+		optionData := make([]uint8, length)
+		err = binary.Read(bytes.NewBuffer(data[offset+2:offset+2+length]), binary.BigEndian, &optionData)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		dhcpOption := DHCPOption{}
+		dhcpOption.Type = option
+		dhcpOption.Length = length
+		dhcpOption.Data = optionData
+
+		optionArray = append(optionArray, dhcpOption)
+
+		//Get past the option, length and data for next option in the packet
+		offset += (2 + length)
 	}
 
-	var option, length uint8
-
-	err := binary.Read(bytes.NewBuffer(data[offset:offset+1]), binary.BigEndian, &option)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = binary.Read(bytes.NewBuffer(data[offset+1:offset+2]), binary.BigEndian, &length)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	optionData := make([]uint8, length)
-	err = binary.Read(bytes.NewBuffer(data[offset+2:offset+2+length]), binary.BigEndian, &optionData)
-
-	if err != nil {
-
-	}
-
-	dhcpOption := DHCPOption{}
-	dhcpOption.Type = option
-	dhcpOption.Length = length
-	dhcpOption.Data = optionData
-
-	return &dhcpOption
+	return optionArray
 }
