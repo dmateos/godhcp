@@ -32,7 +32,7 @@ func NewUDPListener() (UDPListener, error) {
 	return listener, nil
 }
 
-func (listener *UDPListener) GetPacket() ([]byte, *net.UDPAddr, error) {
+func (listener *UDPListener) GetPacket() ([]uint8, *net.UDPAddr, error) {
 	buffer := make([]byte, 2048)
 	n, addr, err := listener.connection.ReadFromUDP(buffer[:])
 
@@ -48,6 +48,6 @@ func (listener *UDPListener) GetPacket() ([]byte, *net.UDPAddr, error) {
 	return new_buffer, addr, nil
 }
 
-func (listener *UDPListener) SendPacket(p Packet, addr *net.UDPAddr) {
-	listener.connection.WriteToUDP(p.ToBinary(), addr)
+func (listener *UDPListener) SendPacket(data []uint8, addr *net.UDPAddr) {
+	listener.connection.WriteToUDP(data, addr)
 }

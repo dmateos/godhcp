@@ -63,5 +63,7 @@ func (packet *DHCPPacket) Int2Ip(nn uint32) net.IP {
 }
 
 func (packet *DHCPPacket) ToBinary() []byte {
-	return make([]byte, 12)
+	var buffer bytes.Buffer
+	binary.Write(&buffer, binary.BigEndian, packet)
+	return buffer.Bytes()
 }

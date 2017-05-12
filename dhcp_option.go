@@ -71,3 +71,9 @@ func (parser *DHCPOptionParser) Parse(data []byte, offset int) ([]DHCPOption, er
 
 	return optionArray, nil
 }
+
+func (parser *DHCPOptionParser) ToBinary(options []DHCPOption) []byte {
+	var buffer bytes.Buffer
+	binary.Write(&buffer, binary.BigEndian, options)
+	return buffer.Bytes()
+}
