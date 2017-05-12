@@ -18,26 +18,6 @@ type DHCPPacket struct {
 	Magic                          [4]uint8
 }
 
-const (
-	BOOTREQUEST = 1
-	BOOTREPLY   = 2
-)
-
-const (
-	DHCP_DISCOVER = 1
-	DHCP_OFFER    = 2
-	DHCP_REQUEST  = 3
-	DHCP_DECLINE  = 4
-	DHCP_ACK      = 5
-	DHCP_NAK      = 6
-	DHCP_RELEASE  = 7
-	DHCP_INFORM   = 8
-)
-
-const (
-	DHCP_PACKET_END = 240
-)
-
 func NewDHCPPacket(data []byte) (DHCPPacket, error) {
 	packet := DHCPPacket{}
 	err := binary.Read(bytes.NewBuffer(data[:DHCP_PACKET_END]), binary.BigEndian, &packet)
@@ -49,7 +29,7 @@ func NewDHCPPacket(data []byte) (DHCPPacket, error) {
 	return packet, nil
 }
 
-func (packet DHCPPacket) Print() {
+func (packet *DHCPPacket) Print() {
 	str := fmt.Sprintf(
 		"op: %d, htype:%d, hlen:%d, hops:%d, xid:%d, secs:%d, flags:%d",
 		packet.Op, packet.Htype, packet.Hlen, packet.Hops,
@@ -66,7 +46,7 @@ func (packet DHCPPacket) Print() {
 	fmt.Println(ipStr)
 }
 
-func (packet DHCPPacket) IsValid() bool {
+func (packet *DHCPPacket) IsValid() bool {
 	if packet.Magic[0] == 99 &&
 		packet.Magic[1] == 130 &&
 		packet.Magic[2] == 83 &&
@@ -76,12 +56,12 @@ func (packet DHCPPacket) IsValid() bool {
 	return false
 }
 
-func (packet DHCPPacket) Int2Ip(nn uint32) net.IP {
+func (packet *DHCPPacket) Int2Ip(nn uint32) net.IP {
 	ip := make(net.IP, 4)
 	binary.BigEndian.PutUint32(ip, nn)
 	return ip
 }
 
-func (packet DHCPPacket) ToBinary() []byte {
+func (packet *DHCPPacket) ToBinary() []byte {
 	return make([]byte, 12)
 }

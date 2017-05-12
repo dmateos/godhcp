@@ -1,0 +1,98 @@
+package main
+
+// DHCP Options + Vendor extentions
+const (
+	DHCP_PAD                   = 0
+	DHCP_SUBNET_MASK           = 1
+	DHCP_TIME_OFFSET           = 2
+	DHCP_ROUTER                = 3
+	DHCP_TIME_SERVER           = 4
+	DHCP_NAME_SERVER           = 5
+	DHCP_DOMAIN_NAME_SERVER    = 6
+	DHCP_LOG_SERVER            = 7
+	DHCP_COOKIE_SERVER         = 8
+	DHCP_LPR_SERVER            = 9
+	DHCP_IMPRESS_SERVER        = 10
+	DHCP_RESOURCE_LOCATION     = 11
+	DHCP_HOST_NAME             = 12
+	DHCP_BOOT_FILE_SIZE        = 13
+	DHCP_MERIT_DUMP_FILE       = 14
+	DHCP_DOMAIN_NAME           = 15
+	DHCP_SWAP_SERVER           = 16
+	DHCP_ROOT_PATH             = 17
+	DHCP_EXT_PATH              = 18
+	DHCP_IP_FORWARD            = 19
+	DHCP_NON_LOCAL_ROUTE       = 20
+	DHCP_POLICY_FILTER         = 21
+	DHCP_MAX_DATAGRAM          = 22
+	DHCP_IP_TTL                = 23
+	DHCP_MTU_AGE_TIMEOUT       = 24
+	DHCP_PATH_MTU_TABLE        = 25
+	DHCP_INTERFACE_MTU         = 26
+	DHCP_SUBNETS_LOCAL         = 27
+	DHCP_BROADCAST_ADDR        = 28
+	DHCP_PEFORM_MASK_DISCOVERY = 29
+	DHCP_MASK_SUPPLIER         = 30
+	DHCP_ROUTER_DISCOVERY      = 31
+	DHCP_ROUTER_SOLICITATION   = 32
+	DHCP_STATIC_ROUTE          = 33
+	DHCP_TRAILER_ENCAP         = 34
+	DHCP_ARP_CACHE_TIMEOUT     = 35
+	DHCP_ETHERNET_ENCAP        = 36
+	DHCP_TCP_TLL               = 37
+	DHCP_TCP_KEEPALIVE         = 38
+	DHCP_TCP_KEEPALIVE_GARB    = 39
+	DHCP_NIS_DOMAIN            = 40
+	DHCP_NIS_SERVER            = 41
+	DHCP_NTP_SERVER            = 42
+	DHCP_VENDOR_SPECIFIC       = 43
+	DHCP_NETBIOS_NAME          = 44
+	DHCP_NETBIOS_DATAGRAM      = 45
+	DHCP_NETBIOS_NODE_TYPE     = 46
+	DHCP_NETBIOS_SCOPE         = 47
+	DHCP_X_WINDOW_FONT         = 48
+	DHCP_X_WINDOW_DISPLAY      = 49
+	DHCP_NIS_SERVICE_DOMAIN    = 64
+	DHCP_NIS_SERVICE_SERVERS   = 65
+	DHCP_MOBILE_AGENT_IP       = 68
+	DHCP_SMTP_SERVER           = 69
+	DHCP_POP_SERVER            = 70
+	DHCP_NTP_SERVER_IP         = 71
+	DHCP_WWW_SERVER            = 72
+	DHCP_FINGER_SERVER         = 73
+	DHCP_IRC_SERVER            = 74
+	DHCP_STEER_TALK            = 75
+	DHCP_STEER_DIR             = 76
+	DHCP_REQUESTED_ADDR        = 50
+	DHCP_LEASE_TIME            = 51
+	DHCP_OPTION_OVERLOAD       = 52
+	DHCP_MESSAGE_TYPE          = 53
+	DHCP_SERVER_ID             = 54
+	DHCP_PARAM_REQ_LIST        = 55
+	DHCP_MESSAGE               = 56
+	DHCP_MESSAGE_MAX           = 57
+	DHCP_RENEWAL               = 58
+	DHCP_REBIND                = 59
+	DHCP_VENDOR_CLASS          = 60
+	DHCP_CLIENT_IDENT          = 61
+	DHCP_OPTION_END            = 255
+)
+
+// DHCP Message types (option 53)
+const (
+	DHCP_DISCOVER = 1
+	DHCP_OFFER    = 2
+	DHCP_REQUEST  = 3
+	DHCP_DECLINE  = 4
+	DHCP_ACK      = 5
+	DHCP_NAK      = 6
+	DHCP_RELEASE  = 7
+	DHCP_INFORM   = 8
+)
+
+// DHCP Packet numbers
+const (
+	BOOTREQUEST     = 1
+	BOOTREPLY       = 2
+	DHCP_PACKET_END = 240
+)

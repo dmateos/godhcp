@@ -15,16 +15,11 @@ type DHCPOption struct {
 	Data   []uint8
 }
 
-const (
-	DHO_PAD = 0
-	DHO_END = 255
-)
-
-func (parser DHCPOptionParser) Print(options []DHCPOption) {
+func (parser *DHCPOptionParser) Print(options []DHCPOption) {
 	fmt.Println(options)
 }
 
-func (parser DHCPOptionParser) Parse(data []byte, offset int) ([]DHCPOption, error) {
+func (parser *DHCPOptionParser) Parse(data []byte, offset int) ([]DHCPOption, error) {
 	var optionArray []DHCPOption
 
 	for offset+2 < len(data) {
@@ -37,11 +32,11 @@ func (parser DHCPOptionParser) Parse(data []byte, offset int) ([]DHCPOption, err
 			return nil, err
 		}
 
-		if option == DHO_END {
+		if option == DHCP_OPTION_END {
 			break
 		}
 
-		if option == DHO_PAD {
+		if option == DHCP_PAD {
 			offset += 1
 			continue
 		}
